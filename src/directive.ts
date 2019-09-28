@@ -21,7 +21,7 @@ interface SetColorInputBase {
   fill: string;
   border: string;
 }
-export interface VTheme extends SetColorInputBase {
+export interface VThemeDirectiveInput extends SetColorInputBase {
   isImage: boolean;
   hover: SetColorInputBase;
   focus: SetColorInputBase;
@@ -30,11 +30,10 @@ export interface VTheme extends SetColorInputBase {
   placeholder: { color: string; hover: string; focus: string };
   shadow: boolean | 'sm' | 'lg' | 'strong';
   update: Array<{ type: 'shadow' | 'color' | 'background' | 'fill' | 'border' | 'hover'; value: string | SetColorInputBase }> | true;
-  checkboxSwitch: boolean;
   before: SetColorInputBase;
 }
 
-export function vThemeSetClasses(el: HTMLElement, input: VTheme, canUpdate: boolean) {
+function vThemeSetClasses(el: HTMLElement, input: VThemeDirectiveInput, canUpdate: boolean) {
   // update is true if input.update is truthy and the update hook gets called.
   if (canUpdate && typeof input.update !== 'boolean') {
     for (const update of input.update) {
@@ -92,9 +91,6 @@ export function vThemeSetClasses(el: HTMLElement, input: VTheme, canUpdate: bool
     } else {
       el.classList.remove('t-image-icon-invert');
     }
-  }
-  if (input.checkboxSwitch) {
-    el.classList.add('t-checkboxSwitch');
   }
 
   // base types

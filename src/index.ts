@@ -3,6 +3,9 @@ import directive from './directive';
 import ThemeStore, { ThemeOptions } from './store';
 import { InitTheme } from './utility';
 
+/**
+ * TODO
+ */
 export class ThemeController {
   public static store = new ThemeStore();
   public static Init(options?: ThemeOptions) {
@@ -24,5 +27,9 @@ const ThemePlugin: PluginObject<ThemeOptions> = {
   }
 };
 
-export { ITheme, IThemeColors, ThemeOptions } from './store';
+export { ITheme, ThemeOptions } from './store';
+export { VThemeDirectiveInput } from './directive';
+export * from './update';
+export * from './save';
+export * from './helpers';
 export default ThemePlugin;

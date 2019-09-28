@@ -1,33 +1,51 @@
+import { VThemeLoader, VThemeScrollbar } from './helpers';
+
+/**
+ * TODO
+ */
 export interface ITheme {
   name: string;
+  /**
+   * If true the theme will be saved when the `SaveTheme` function gets called.
+   */
   canBeModified: boolean;
+  /**
+   * Theme Colors
+   */
   colors: {
     [key: string]: string;
   };
+  /**
+   * Theme Fonts (font-family in css)
+   */
   fonts: {
     [key: string]: string;
   };
-  invertImageIcon: boolean;
   defaults: {
+    /**
+     * Default Text Color, Note the Color has to be in the theme colors.
+     */
     color: string;
+    /**
+     * Default Background Color, Note the Color has to be in the theme colors.
+     */
     background: string;
-    scrollBar: { track: string; thumb: string; thumbHover: string };
-    shadow: string;
-    loader: {
-      primary: string;
-      accent: string;
-    };
-    checkboxSwitch: {
-      checked: string;
-      unchecked: string;
-    };
-    sidebarActive: string;
+    /**
+     * Default Font Family, Note the font has to be in the theme fonts.
+     */
     font: string;
   };
+  invertImageIcon: boolean;
+  shadow?: {
+    color: string;
+  };
+  scrollBar?: VThemeScrollbar;
+  loader?: VThemeLoader;
 }
-export interface IThemeColors {
-  [color: string]: string;
-}
+
+/**
+ * Vtheme Installation Options.
+ */
 export interface ThemeOptions {
   defaults?: { defaultTheme: string; themes: { [name: string]: ITheme } };
 }
@@ -45,16 +63,8 @@ export default class ThemeStore {
     }
   }
 
-  public get CurrentThemeColors() {
-    return this.themes[this.currentTheme].colors;
-  }
-
-  public get CurrentThemeDefaults() {
-    return this.themes[this.currentTheme].defaults;
-  }
-
-  public get CurrentThemeFonts() {
-    return this.themes[this.currentTheme].fonts;
+  public GetCurrentTheme(property: keyof ITheme) {
+    return this.themes[this.currentTheme][property];
   }
 
   public changeCurrent(themeName: string) {
@@ -66,13 +76,7 @@ export default class ThemeStore {
   }
 
   public changeCurrentFont(input: { key: string; value: string }) {
-    // @ts-ignore
     this.themes[this.currentTheme].fonts[input.key] = input.value;
-  }
-
-  public changeNotificationCurrentColor(input: { key: string; value: string }) {
-    // @ts-ignore
-    this.themes[this.currentTheme].notificationColors[input.key] = input.value;
   }
 
   public toggleInvertImageIcon() {
