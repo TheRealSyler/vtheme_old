@@ -46,6 +46,39 @@ export class VThemeLoader {
     this.borderWidth = ToCssUnit(options.borderWidth || 5);
   }
 }
+export class VThemeRouterLink {
+  constructor(
+    /**
+     * Router Link color in Css color format, `#35a` etc.
+     */
+    public color: string,
+    /**
+     * Router Link hover color in Css color format, `#35a` etc.
+     */
+    public hoverColor: string,
+
+    /**
+     * Router Link active color in Css color format, `#35a` etc.
+     */
+    public activeColor: string,
+    /**
+     * Router Link active hover color in Css color format, `#35a` etc.
+     */
+    public activeHoverColor: string,
+    /**
+     * Adds underline to router link if true.
+     */
+    public underline: boolean = true,
+    /**
+     * Router Link click (active selector) color in Css color format, `#35a` etc.
+     */
+    public clickColor?: string,
+    /**
+     * Router Link active click (active selector) color in Css color format, `#35a` etc.
+     */
+    public activeClickColor?: string
+  ) {}
+}
 export class VThemeScrollbar {
   /**
    * Scrollbar width in Css unit format, `1px` | `1rem` etc.

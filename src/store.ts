@@ -1,4 +1,4 @@
-import { VThemeLoader, VThemeScrollbar } from './helpers';
+import { VThemeLoader, VThemeScrollbar, VThemeRouterLink } from './helpers';
 
 /**
  * TODO
@@ -41,6 +41,7 @@ export interface ITheme {
   };
   scrollBar?: VThemeScrollbar;
   loader?: VThemeLoader;
+  routerLink?: VThemeRouterLink;
 }
 
 /**

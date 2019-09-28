@@ -15,6 +15,7 @@ export class ThemeController {
 
 const ThemePlugin: PluginObject<ThemeOptions> = {
   install(Vue, options) {
+    console.log('INIT');
     ThemeController.Init(options);
     const app = new Vue({
       data: {

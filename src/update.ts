@@ -8,6 +8,7 @@ const ShadowThemeStyleTagName = 't-style-tag-shadow';
 const ScrollBarThemeStyleTagName = 't-style-tag-scrollbar';
 const FontThemeStyleTagName = 't-style-tag-font';
 const LoaderThemeStyleTagName = 't-style-tag-loader';
+const RouterLinkThemeStyleTagName = 't-style-tag-router-link';
 
 interface UpdateThemeOptions {
   updateFonts?: boolean;
@@ -16,6 +17,7 @@ interface UpdateThemeOptions {
   updateScrollbar?: boolean;
   updateShadow?: boolean;
   updateLoader?: boolean;
+  updateRouterLink?: boolean;
 }
 const defaultOptions: UpdateThemeOptions = {
   updateColors: true,
@@ -23,7 +25,8 @@ const defaultOptions: UpdateThemeOptions = {
   updateStatic: false,
   updateScrollbar: false,
   updateShadow: false,
-  updateLoader: false
+  updateLoader: false,
+  updateRouterLink: false
 };
 /**
  * Updates the Dom with the current theme based on the given options.
@@ -49,6 +52,9 @@ export function UpdateTheme(options: UpdateThemeOptions = defaultOptions) {
   if (options.updateLoader) {
     HandleLoader(theme.GetCurrentTheme('loader') as ITheme['loader']);
   }
+  if (options.updateRouterLink) {
+    HandleRouterLink(theme.GetCurrentTheme('routerLink') as ITheme['routerLink']);
+  }
 }
 
 // ## ANCHOR Color
@@ -63,14 +69,13 @@ function HandleColorsUpdate(theme: ThemeStore) {
 
   const themeColors = theme.GetCurrentTheme('colors') as ITheme['colors'];
   const themeDefaults = theme.GetCurrentTheme('defaults') as ITheme['defaults'];
-
   let colorStyleContent = `
 body, b, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, span {
-  color: ${themeColors[themeDefaults.color]};
+  color: ${themeColors[themeDefaults.color]} !important;
 }
 body {
   font-family: ${(theme.GetCurrentTheme('fonts') as ITheme['fonts'])[themeDefaults.font]} !important;
-  background: ${themeColors[themeDefaults.background]};
+  background: ${themeColors[themeDefaults.background]} !important;
 }
 `;
   for (const key in themeColors) {
@@ -245,11 +250,53 @@ function HandleStaticClasses() {
   }
   const content = `
 .t-image-icon-invert {
-  filter: invert(100%)
+  filter: invert(100%);
 }
 .t-shadow-none {
   box-shadow: none;
-}
-  `;
+}`;
   staticThemeElement.textContent = content;
+}
+// ## ANCHOR Router Link
+function HandleRouterLink(router: ITheme['routerLink']) {
+  if (router) {
+    let routerThemeElement = document.getElementById(RouterLinkThemeStyleTagName);
+    if (routerThemeElement === null) {
+      const styleEl = document.createElement('style');
+      styleEl.id = RouterLinkThemeStyleTagName;
+      document.head.appendChild(styleEl);
+      routerThemeElement = styleEl;
+    }
+    let content = `
+a:-webkit-any-link {
+  color: ${router.color};
+  cursor: pointer;
+  text-decoration: ${router.underline ? 'underline' : 'none'};
+}
+a:-webkit-any-link:hover {
+  color: ${router.hoverColor};
+}
+.router-link-active {
+  color: ${router.activeColor} !important;
+}
+.router-link-active:hover {
+  color: ${router.activeHoverColor} !important;
+}
+`;
+    if (router.activeClickColor) {
+      content += `
+router-link-active:active {
+  color: ${router.activeClickColor} !important;
+}
+`;
+    }
+    if (router.clickColor) {
+      content += `
+a:-webkit-any-link:active {
+  color: ${router.clickColor} !important;
+}
+`;
+    }
+    routerThemeElement.textContent = content;
+  }
 }

@@ -24,7 +24,8 @@ export function InitTheme() {
     updateStatic: true,
     updateScrollbar: true,
     updateLoader: true,
-    updateShadow: true
+    updateShadow: true,
+    updateRouterLink: true
   });
 }
 /**
@@ -37,14 +38,18 @@ export function GetTheme() {
     SaveTheme();
   } else {
     const Data: ThemeData = JSON.parse(SavedThemeData);
-    theme.changeCurrent(Data.currentTheme);
-    for (const key in theme.themes) {
-      if (theme.themes.hasOwnProperty(key)) {
-        const Theme = theme.themes[key];
-        if (Theme.canBeModified) {
-          theme.changeTheme({ themeName: key, value: Merge(theme.themes[key], Data.customThemes[key]) });
+    if (theme.themes[Data.currentTheme]) {
+      theme.changeCurrent(Data.currentTheme);
+      for (const key in theme.themes) {
+        if (theme.themes.hasOwnProperty(key)) {
+          const Theme = theme.themes[key];
+          if (Theme.canBeModified) {
+            theme.changeTheme({ themeName: key, value: Merge(theme.themes[key], Data.customThemes[key]) });
+          }
         }
       }
+    } else {
+      SaveTheme();
     }
   }
 }
