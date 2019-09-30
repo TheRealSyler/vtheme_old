@@ -15,7 +15,6 @@ export class ThemeController {
 
 const ThemePlugin: PluginObject<ThemeOptions> = {
   install(Vue, options) {
-    console.log('INIT');
     ThemeController.Init(options);
     const app = new Vue({
       data: {
@@ -31,6 +30,7 @@ const ThemePlugin: PluginObject<ThemeOptions> = {
 export { ITheme, ThemeOptions } from './store';
 export { VThemeDirectiveInput } from './directive';
 export * from './update';
+export * from './extraFunctions';
 export * from './save';
 export * from './helpers';
 export default ThemePlugin;

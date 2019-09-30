@@ -1,3 +1,6 @@
+import { isValidStringColor } from 's.color';
+import { VThemeColorOptions, defaultVThemeColorOptions } from './helpers.internal';
+
 export class VThemeLoader {
   /**
    * Loader width in Css unit format, `1px` | `1rem` etc.
@@ -117,6 +120,33 @@ export class VThemeScrollbar {
     this.width = ToCssUnit(options.width || 10);
     this.height = ToCssUnit(options.height || 10);
     this.radius = ToCssUnit(options.radius || 12);
+  }
+}
+
+export class VThemeColor {
+  value: string;
+  options: VThemeColorOptions = {};
+  constructor(
+    /**
+     * Color value in Css color format, `#35a` etc.
+     */
+    color: string,
+    /**
+     * Settings, fill is false by Default.
+     */
+    options?: VThemeColorOptions
+  ) {
+    if (options === undefined) {
+      this.options = defaultVThemeColorOptions;
+    } else {
+      this.options = options;
+    }
+
+    if (isValidStringColor(color)) {
+      this.value = color;
+    } else {
+      this.value = '#000';
+    }
   }
 }
 

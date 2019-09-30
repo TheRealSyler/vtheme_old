@@ -1,6 +1,7 @@
 import { StringToRGB } from 's.color';
 import ThemeStore, { ITheme } from './store';
-import { ThemeController } from '.';
+import { ThemeController, VThemeColor } from '.';
+import { VThemeColorOptions, defaultVThemeColorOptions } from './helpers.internal';
 
 const ColorThemeStyleTagName = 't-style-tag-color';
 const StaticThemeStyleTagName = 't-style-tag-static';
@@ -70,27 +71,33 @@ function HandleColorsUpdate(theme: ThemeStore) {
   const themeColors = theme.GetCurrentTheme('colors') as ITheme['colors'];
   const themeDefaults = theme.GetCurrentTheme('defaults') as ITheme['defaults'];
   let colorStyleContent = `
-body, b, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, span {
-  color: ${themeColors[themeDefaults.color]} !important;
+body, b, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, span, input {
+  color: ${GetColor(themeColors[themeDefaults.color])} !important;
 }
 body {
   font-family: ${(theme.GetCurrentTheme('fonts') as ITheme['fonts'])[themeDefaults.font]} !important;
-  background: ${themeColors[themeDefaults.background]} !important;
+  background: ${GetColor(themeColors[themeDefaults.background])} !important;
 }
 `;
   for (const key in themeColors) {
     if (themeColors.hasOwnProperty(key)) {
-      const color = themeColors[key];
-      colorStyleContent += `.t-bg-${key},
+      const color = GetColor(themeColors[key]);
+      const options = GetOptions(themeColors[key]);
+
+      if (options.background)
+        colorStyleContent += `.t-bg-${key},
 .t-h-bg-${key}:hover,
-.t-f-bg-${key}:active,
+.t-f-bg-${key}:focus,
+.t-a-bg-${key}:active,
 .t-af-bg-${key}::after,
 .t-bf-bg-${key}::before {
   background-color: ${color} !important;
 }
 `;
-      colorStyleContent += `.t-c-${key},
+      if (options.color)
+        colorStyleContent += `.t-c-${key},
 .t-h-c-${key}:hover,
+.t-f-c-${key}:focus,
 .t-a-c-${key}:active,
 .t-p-c-${key}::placeholder,
 .t-p-h-c-${key}:hover::placeholder,
@@ -100,17 +107,21 @@ body {
   color: ${color} !important;
 }
 `;
-      colorStyleContent += `.t-f-${key},
+      if (options.fill)
+        colorStyleContent += `.t-f-${key},
 .t-h-f-${key}:hover,
-.t-f-f-${key}:active,
+.t-a-f-${key}:active,
+.t-f-f-${key}:focus,
 .t-af-f-${key}::after,
 .t-bf-f-${key}::before {
   fill: ${color} !important;
 }
 `;
-      colorStyleContent += `.t-b-${key},
+      if (options.border)
+        colorStyleContent += `.t-b-${key},
 .t-h-b-${key}:hover,
-.t-f-b-${key}:active,
+.t-f-b-${key}:focus,
+.t-a-b-${key}:active,
 .t-af-b-${key}::after,
 .t-bf-b-${key}::before {
   border-color: ${color} !important;
@@ -194,7 +205,7 @@ function HandleShadow(shadow: ITheme['shadow']) {
       document.head.appendChild(styleEl);
       shadowThemeElement = styleEl;
     }
-    let shadowColor = StringToRGB(shadow.color);
+    let shadowColor = StringToRGB(GetColor(shadow.color));
     if (!shadowColor) {
       shadowColor = { r: 0, a: 1, b: 0, g: 0 };
     }
@@ -216,28 +227,25 @@ function HandleShadow(shadow: ITheme['shadow']) {
 }
 // ## ANCHOR Font
 function HandleFontUpdate(theme: ThemeStore) {
-  return new Promise<boolean>((resolve, reject) => {
-    let fontThemeElement = document.getElementById(FontThemeStyleTagName);
-    if (fontThemeElement === null) {
-      const styleEl = document.createElement('style');
-      styleEl.id = FontThemeStyleTagName;
-      document.head.appendChild(styleEl);
-      fontThemeElement = styleEl;
-    }
+  let fontThemeElement = document.getElementById(FontThemeStyleTagName);
+  if (fontThemeElement === null) {
+    const styleEl = document.createElement('style');
+    styleEl.id = FontThemeStyleTagName;
+    document.head.appendChild(styleEl);
+    fontThemeElement = styleEl;
+  }
 
-    const fonts = theme.GetCurrentTheme('fonts') as ITheme['fonts'];
-    let fontStyleContent = '';
-    for (const key in fonts) {
-      if (fonts.hasOwnProperty(key)) {
-        const font = fonts[key];
-        fontStyleContent += `.t-font-${key} {
+  const fonts = theme.GetCurrentTheme('fonts') as ITheme['fonts'];
+  let fontStyleContent = '';
+  for (const key in fonts) {
+    if (fonts.hasOwnProperty(key)) {
+      const font = fonts[key];
+      fontStyleContent += `.t-font-${key} {
     font-family: ${font} !important;
   }`;
-      }
     }
-    fontThemeElement.textContent = fontStyleContent;
-    resolve(true);
-  });
+  }
+  fontThemeElement.textContent = fontStyleContent;
 }
 // ## ANCHOR Static
 function HandleStaticClasses() {
@@ -299,4 +307,10 @@ a:-webkit-any-link:active {
     }
     routerThemeElement.textContent = content;
   }
+}
+export function GetColor(input: string | VThemeColor) {
+  return input instanceof VThemeColor ? input.value : input;
+}
+export function GetOptions(input: string | VThemeColor): VThemeColorOptions {
+  return input instanceof VThemeColor ? input.options : defaultVThemeColorOptions;
 }

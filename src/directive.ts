@@ -25,6 +25,7 @@ export interface VThemeDirectiveInput extends SetColorInputBase {
   isImage: boolean;
   hover: SetColorInputBase;
   focus: SetColorInputBase;
+  active: SetColorInputBase;
   after: SetColorInputBase;
   font: string;
   placeholder: { color: string; hover: string; focus: string };
@@ -140,6 +141,21 @@ function vThemeSetClasses(el: HTMLElement, input: VThemeDirectiveInput, canUpdat
     }
     if (input.focus.border) {
       el.classList.add(`t-f-b-${input.focus.border}`);
+    }
+  }
+
+  if (input.active) {
+    if (input.active.background) {
+      el.classList.add(`t-a-bg-${input.active.background}`);
+    }
+    if (input.active.color) {
+      el.classList.add(`t-a-c-${input.active.color}`);
+    }
+    if (input.active.fill) {
+      el.classList.add(`t-a-f-${input.active.fill}`);
+    }
+    if (input.active.border) {
+      el.classList.add(`t-a-b-${input.active.border}`);
     }
   }
 

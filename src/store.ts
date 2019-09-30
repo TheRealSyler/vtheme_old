@@ -1,4 +1,6 @@
-import { VThemeLoader, VThemeScrollbar, VThemeRouterLink } from './helpers';
+import { VThemeLoader, VThemeScrollbar, VThemeRouterLink, VThemeColor } from './helpers';
+
+export type Color = VThemeColor | string;
 
 /**
  * TODO
@@ -13,7 +15,7 @@ export interface ITheme {
    * Theme Colors
    */
   colors: {
-    [key: string]: string;
+    [key: string]: Color;
   };
   /**
    * Theme Fonts (font-family in css)
@@ -37,7 +39,7 @@ export interface ITheme {
   };
   invertImageIcon: boolean;
   shadow?: {
-    color: string;
+    color: Color;
   };
   scrollBar?: VThemeScrollbar;
   loader?: VThemeLoader;
