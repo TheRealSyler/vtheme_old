@@ -2,6 +2,7 @@ import { StringToRGB } from 's.color';
 import ThemeStore, { ITheme } from './store';
 import { ThemeController, VThemeColor } from '.';
 import { VThemeColorOptions, defaultVThemeColorOptions } from './helpers.internal';
+import { ConsoleLog } from './console';
 
 const ColorThemeStyleTagName = 't-style-tag-color';
 const StaticThemeStyleTagName = 't-style-tag-static';
@@ -29,32 +30,53 @@ const defaultOptions: UpdateThemeOptions = {
   updateLoader: false,
   updateRouterLink: false
 };
+
 /**
  * Updates the Dom with the current theme based on the given options.
  * only updates the colors if no options are provided.
  */
-export function UpdateTheme(options: UpdateThemeOptions = defaultOptions) {
+export function UpdateTheme(options: UpdateThemeOptions | boolean = defaultOptions) {
   const theme = ThemeController.store;
-  if (options.updateColors) {
+  const all = typeof options === 'boolean' ? options : false;
+  if (typeof options === 'boolean') {
+    options = {};
+  }
+  if (all || options.updateColors) {
     HandleColorsUpdate(theme);
   }
-  if (options.updateFonts) {
+  if (all || options.updateFonts) {
     HandleFontUpdate(theme);
   }
-  if (options.updateStatic) {
+  if (all || options.updateStatic) {
     HandleStaticClasses();
   }
-  if (options.updateScrollbar) {
-    HandleScrollbar(theme.GetCurrentTheme('scrollBar') as ITheme['scrollBar']);
+  if (all || options.updateScrollbar) {
+    HandleScrollbar(theme.GetCurrentThemeProperty('scrollBar') as ITheme['scrollBar']);
   }
-  if (options.updateShadow) {
-    HandleShadow(theme.GetCurrentTheme('shadow') as ITheme['shadow']);
+  if (all || options.updateShadow) {
+    HandleShadow(theme.GetCurrentThemeProperty('shadow') as ITheme['shadow']);
   }
-  if (options.updateLoader) {
-    HandleLoader(theme.GetCurrentTheme('loader') as ITheme['loader']);
+  if (all || options.updateLoader) {
+    HandleLoader(theme.GetCurrentThemeProperty('loader') as ITheme['loader']);
   }
-  if (options.updateRouterLink) {
-    HandleRouterLink(theme.GetCurrentTheme('routerLink') as ITheme['routerLink']);
+  if (all || options.updateRouterLink) {
+    HandleRouterLink(theme.GetCurrentThemeProperty('routerLink') as ITheme['routerLink']);
+  }
+  if (theme.Log.ThemeUpdates) {
+    let op = '';
+    if (!all) {
+      for (const key in options) {
+        if (options.hasOwnProperty(key)) {
+          // @ts-ignore
+          if (options[key]) {
+            op += key.replace('update', ' ');
+          }
+        }
+      }
+      ConsoleLog('Updated', op, theme.currentTheme);
+    } else {
+      ConsoleLog('Updated', ' All', theme.currentTheme);
+    }
   }
 }
 
@@ -68,14 +90,14 @@ function HandleColorsUpdate(theme: ThemeStore) {
     colorThemeElement = styleEl;
   }
 
-  const themeColors = theme.GetCurrentTheme('colors') as ITheme['colors'];
-  const themeDefaults = theme.GetCurrentTheme('defaults') as ITheme['defaults'];
+  const themeColors = theme.GetCurrentThemeProperty('colors') as ITheme['colors'];
+  const themeDefaults = theme.GetCurrentThemeProperty('defaults') as ITheme['defaults'];
   let colorStyleContent = `
 body, b, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, span, input {
   color: ${GetColor(themeColors[themeDefaults.color])} !important;
 }
 body {
-  font-family: ${(theme.GetCurrentTheme('fonts') as ITheme['fonts'])[themeDefaults.font]} !important;
+  font-family: ${(theme.GetCurrentThemeProperty('fonts') as ITheme['fonts'])[themeDefaults.font]} !important;
   background: ${GetColor(themeColors[themeDefaults.background])} !important;
 }
 `;
@@ -235,7 +257,7 @@ function HandleFontUpdate(theme: ThemeStore) {
     fontThemeElement = styleEl;
   }
 
-  const fonts = theme.GetCurrentTheme('fonts') as ITheme['fonts'];
+  const fonts = theme.GetCurrentThemeProperty('fonts') as ITheme['fonts'];
   let fontStyleContent = '';
   for (const key in fonts) {
     if (fonts.hasOwnProperty(key)) {

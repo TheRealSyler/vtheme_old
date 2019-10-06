@@ -23,7 +23,7 @@ const ThemePlugin: PluginObject<ThemeOptions> = {
     });
     Vue.prototype.$theme = app.theme;
     Vue.directive('theme', directive);
-    InitTheme();
+    InitTheme(options && options.Log ? options.Log.Init : true);
   }
 };
 

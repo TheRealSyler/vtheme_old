@@ -24,7 +24,6 @@
     "vue": "^2.6.10"
   },
   "dependencies": {
-    "chalk": "^2.4.2",
     "deepmerge": "^4.0.0",
     "s.color": "^0.0.7"
   }

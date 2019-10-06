@@ -27,11 +27,16 @@ export interface VThemeDirectiveInput extends SetColorInputBase {
   focus: SetColorInputBase;
   active: SetColorInputBase;
   after: SetColorInputBase;
+  before: SetColorInputBase;
   font: string;
   placeholder: { color: string; hover: string; focus: string };
   shadow: boolean | 'sm' | 'lg' | 'strong';
-  update: Array<{ type: 'shadow' | 'color' | 'background' | 'fill' | 'border' | 'hover'; value: string | SetColorInputBase }> | true;
-  before: SetColorInputBase;
+  update:
+    | Array<{
+        type: 'shadow' | 'color' | 'background' | 'fill' | 'border' | 'hover' | 'before' | 'after';
+        value: string | SetColorInputBase;
+      }>
+    | true;
 }
 
 function vThemeSetClasses(el: HTMLElement, input: VThemeDirectiveInput, canUpdate: boolean) {
@@ -67,6 +72,38 @@ function vThemeSetClasses(el: HTMLElement, input: VThemeDirectiveInput, canUpdat
             }
             if (update.value.border) {
               el.classList.remove(`t-h-b-${update.value.border}`);
+            }
+          }
+          break;
+        case 'after':
+          if (typeof update.value !== 'string') {
+            if (update.value.background) {
+              el.classList.remove(`t-af-bg-${update.value.background}`);
+            }
+            if (update.value.color) {
+              el.classList.remove(`t-af-c-${update.value.color}`);
+            }
+            if (update.value.fill) {
+              el.classList.remove(`t-af-f-${update.value.fill}`);
+            }
+            if (update.value.border) {
+              el.classList.remove(`t-af-b-${update.value.border}`);
+            }
+          }
+          break;
+        case 'before':
+          if (typeof update.value !== 'string') {
+            if (update.value.background) {
+              el.classList.remove(`t-bf-bg-${update.value.background}`);
+            }
+            if (update.value.color) {
+              el.classList.remove(`t-bf-c-${update.value.color}`);
+            }
+            if (update.value.fill) {
+              el.classList.remove(`t-bf-f-${update.value.fill}`);
+            }
+            if (update.value.border) {
+              el.classList.remove(`t-bf-b-${update.value.border}`);
             }
           }
           break;
