@@ -4,10 +4,11 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "prepack": "npm run build",
-    "build": "ts-node build/build.ts",
-    "watch": "ts-node build/watch.ts"
+    "prepack": "npx tsvp b && npx tdg"
   },
+  "files": [
+    "dist"
+  ],
   "author": "Syler",
   "license": "MIT",
   "devDependencies": {
@@ -20,6 +21,8 @@
     "@types/node": "^12.7.7",
     "chokidar": "^3.1.1",
     "fs-extra": "^8.1.0",
+    "ts-doc-gen": "0.0.1",
+    "tsvp": "^0.1.1",
     "typescript": "^3.6.3",
     "vue": "^2.6.10"
   },

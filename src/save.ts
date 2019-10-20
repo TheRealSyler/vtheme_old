@@ -1,9 +1,9 @@
 import { ThemeController, ITheme } from '.';
-import { ThemeDataStorageName, ThemeData } from './utility';
-import { ConsoleLog } from './console';
+import { ThemeDataStorageName, ThemeData } from './utility.internal';
+import { ConsoleLog } from './console.internal';
 
 /**
- * Save the Theme to local Storage.
+ * Saves the Theme to local Storage.
  */
 export function SaveTheme() {
   const theme = ThemeController.store;

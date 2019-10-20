@@ -1,5 +1,5 @@
 import { VThemeLoader, VThemeScrollbar, VThemeRouterLink, VThemeColor } from './helpers';
-import { ThemeLogMutation, ThemeCannotBeModifiedWarning } from './console';
+import { ThemeLogMutation, ThemeCannotBeModifiedWarning } from './console.internal';
 export type Color = VThemeColor | string;
 
 /**
@@ -40,6 +40,9 @@ export interface ITheme {
   invertImageIcon: boolean;
   shadow?: {
     color: Color;
+  };
+  data?: {
+    [key: string]: any;
   };
   scrollBar?: VThemeScrollbar;
   loader?: VThemeLoader;

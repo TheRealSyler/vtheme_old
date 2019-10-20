@@ -2,7 +2,7 @@ import { StringToRGB } from 's.color';
 import ThemeStore, { ITheme } from './store';
 import { ThemeController, VThemeColor } from '.';
 import { VThemeColorOptions, defaultVThemeColorOptions } from './helpers.internal';
-import { ConsoleLog } from './console';
+import { ConsoleLog } from './console.internal';
 
 const ColorThemeStyleTagName = 't-style-tag-color';
 const StaticThemeStyleTagName = 't-style-tag-static';
@@ -94,11 +94,11 @@ function HandleColorsUpdate(theme: ThemeStore) {
   const themeDefaults = theme.GetCurrentThemeProperty('defaults') as ITheme['defaults'];
   let colorStyleContent = `
 body, b, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, span, input {
-  color: ${GetColor(themeColors[themeDefaults.color])} !important;
+  color: ${GetColor(themeColors[themeDefaults.color])};
 }
 body {
-  font-family: ${(theme.GetCurrentThemeProperty('fonts') as ITheme['fonts'])[themeDefaults.font]} !important;
-  background: ${GetColor(themeColors[themeDefaults.background])} !important;
+  font-family: ${(theme.GetCurrentThemeProperty('fonts') as ITheme['fonts'])[themeDefaults.font]};
+  background: ${GetColor(themeColors[themeDefaults.background])};
 }
 `;
   for (const key in themeColors) {
@@ -331,8 +331,8 @@ a:-webkit-any-link:active {
   }
 }
 export function GetColor(input: string | VThemeColor) {
-  return input instanceof VThemeColor ? input.value : input;
+  return typeof input === 'object' ? input.value : input;
 }
 export function GetOptions(input: string | VThemeColor): VThemeColorOptions {
-  return input instanceof VThemeColor ? input.options : defaultVThemeColorOptions;
+  return typeof input === 'object' ? input.options : defaultVThemeColorOptions;
 }

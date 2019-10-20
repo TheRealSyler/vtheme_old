@@ -3,7 +3,7 @@ import { ThemeController } from './index';
 import { ITheme } from './store';
 import { UpdateTheme } from './update';
 import { SaveTheme } from './save';
-import { consoleColors } from './console';
+import { consoleColors } from './console.internal';
 /**
  * Internal
  */
@@ -52,7 +52,7 @@ export function GetTheme() {
         if (theme.themes.hasOwnProperty(key)) {
           const Theme = theme.themes[key];
           if (Theme.canBeModified) {
-            theme.changeTheme({ themeName: key, value: Merge(theme.themes[key], Data.customThemes[key]) });
+            theme.changeTheme({ themeName: key, value: Merge(Theme, Data.customThemes[key]) });
           }
         }
       }

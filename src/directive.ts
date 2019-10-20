@@ -15,7 +15,7 @@ const directive: DirectiveOptions = {
 };
 
 export default directive;
-interface SetColorInputBase {
+export interface SetColorInputBase {
   background: string;
   color: string;
   fill: string;

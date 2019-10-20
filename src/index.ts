@@ -1,7 +1,7 @@
 import { PluginObject } from 'vue';
 import directive from './directive';
 import ThemeStore, { ThemeOptions } from './store';
-import { InitTheme } from './utility';
+import { InitTheme } from './utility.internal';
 
 /**
  * TODO
