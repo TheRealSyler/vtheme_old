@@ -38,42 +38,6 @@
   - [GetColor](#getcolor)
   - [GetOptions](#getoptions)
 
-- **[directive](#directive)**
-
-  - [SetColorInputBase](#setcolorinputbase)
-  - [VThemeDirectiveInput](#vthemedirectiveinput)
-
-- **[extraFunctions](#extrafunctions)**
-
-  - [ThemeTransition](#themetransition)
-
-- **[helpers](#helpers)**
-
-  - [VThemeLoader](#vthemeloader)
-  - [VThemeRouterLink](#vthemerouterlink)
-  - [VThemeScrollbar](#vthemescrollbar)
-  - [VThemeColor](#vthemecolor)
-
-- **[index](#index)**
-
-  - [ThemeController](#themecontroller)
-
-- **[save](#save)**
-
-  - [SaveTheme](#savetheme)
-
-- **[store](#store)**
-
-  - [Color](#color)
-  - [ITheme](#itheme)
-  - [ThemeOptions](#themeoptions)
-
-- **[update](#update)**
-
-  - [UpdateTheme](#updatetheme)
-  - [GetColor](#getcolor)
-  - [GetOptions](#getoptions)
-
 # directive
 
 
