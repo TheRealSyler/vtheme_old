@@ -15,26 +15,26 @@ const directive: DirectiveOptions = {
 };
 
 export default directive;
-export interface SetColorInputBase {
+export interface DirectiveInputBase {
   background: string;
   color: string;
   fill: string;
   border: string;
 }
-export interface VThemeDirectiveInput extends SetColorInputBase {
+export interface VThemeDirectiveInput extends DirectiveInputBase {
   isImage: boolean;
-  hover: SetColorInputBase;
-  focus: SetColorInputBase;
-  active: SetColorInputBase;
-  after: SetColorInputBase;
-  before: SetColorInputBase;
+  hover: DirectiveInputBase;
+  focus: DirectiveInputBase;
+  active: DirectiveInputBase;
+  after: DirectiveInputBase;
+  before: DirectiveInputBase;
   font: string;
   placeholder: { color: string; hover: string; focus: string };
   shadow: boolean | 'sm' | 'lg' | 'strong';
   update:
     | Array<{
         type: 'shadow' | 'color' | 'background' | 'fill' | 'border' | 'hover' | 'before' | 'after';
-        value: string | SetColorInputBase;
+        value: string | DirectiveInputBase;
       }>
     | true;
 }

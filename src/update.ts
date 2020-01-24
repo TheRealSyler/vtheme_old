@@ -166,25 +166,25 @@ function HandleLoader(loader: ITheme['loader']) {
       loaderThemeElement = styleEl;
     }
     const content = `
-  .loader {
-    border: ${loader.borderWidth} solid ${loader.primary};
-    border-top: ${loader.borderWidth} solid ${loader.accent};
-    border-radius: 50%;
-    background: #0000;
-    width: ${loader.width};
-    height: ${loader.height};
-    animation: spin ${loader.speed} linear infinite;
-    margin: ${loader.margin};
+.loader {
+  border: ${loader.borderWidth} solid ${loader.options.primary};
+  border-top: ${loader.borderWidth} solid ${loader.options.accent};
+  border-radius: 50%;
+  background: #0000;
+  width: ${loader.width};
+  height: ${loader.height};
+  animation: spin ${loader.speed} linear infinite;
+  margin: ${loader.margin};
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
   }
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
   }
-  `;
+}
+`;
     loaderThemeElement.textContent = content;
   }
 }
@@ -199,20 +199,20 @@ function HandleScrollbar(scrollBar: ITheme['scrollBar']) {
       scrollbarThemeElement = styleEl;
     }
     const content = `
-  body::-webkit-scrollbar, div::-webkit-scrollbar {
-    width: ${scrollBar.width} !important;
-    height: ${scrollBar.height} !important;
-  }
-  body::-webkit-scrollbar-track, div::-webkit-scrollbar-track {
-    background: ${scrollBar.track};
-  }
-  body::-webkit-scrollbar-thumb, div::-webkit-scrollbar-thumb {
-    background: ${scrollBar.thumb};
-    border-radius: ${scrollBar.radius};
-  }
-  body::-webkit-scrollbar-thumb:hover, div::-webkit-scrollbar-thumb:hover {
-    background: ${scrollBar.thumbHover};
-  }
+body::-webkit-scrollbar, div::-webkit-scrollbar {
+  width: ${scrollBar.width} !important;
+  height: ${scrollBar.height} !important;
+}
+body::-webkit-scrollbar-track, div::-webkit-scrollbar-track {
+  background: ${scrollBar.options.track};
+}
+body::-webkit-scrollbar-thumb, div::-webkit-scrollbar-thumb {
+  background: ${scrollBar.options.thumb};
+  border-radius: ${scrollBar.radius};
+}
+body::-webkit-scrollbar-thumb:hover, div::-webkit-scrollbar-thumb:hover {
+  background: ${scrollBar.options.thumbHover};
+}
   `;
     scrollbarThemeElement.textContent = content;
   }
@@ -298,35 +298,36 @@ function HandleRouterLink(router: ITheme['routerLink']) {
       routerThemeElement = styleEl;
     }
     let content = `
-a:-webkit-any-link {
-  color: ${router.color};
+a {
+  color: ${router.options.color};
   cursor: pointer;
-  text-decoration: ${router.underline ? 'underline' : 'none'};
+  text-decoration: ${router.options.underline ? 'underline' : 'none'};
+  outline: none;
 }
-a:-webkit-any-link:hover {
-  color: ${router.hoverColor};
+a:focus {
+  color: ${router.options.activeClickColor};
+  border-radius: ${router.options.focusRadius}px;
+  background: ${router.options.focusColorBg};
+  box-shadow: 0 0 0 ${router.options.focusOffset}px ${router.options.focusColorBg}, 0 0 0 ${router.options.focusOffset +
+      router.options.focusWidth}px ${router.options.focusColor};
+  border: none;
+}
+a:hover {
+  color: ${router.options.hoverColor};
 }
 .router-link-active {
-  color: ${router.activeColor} !important;
+  color: ${router.options.activeColor} !important;
 }
 .router-link-active:hover {
-  color: ${router.activeHoverColor} !important;
+  color: ${router.options.activeHoverColor} !important;
 }
-`;
-    if (router.activeClickColor) {
-      content += `
 router-link-active:active {
-  color: ${router.activeClickColor} !important;
+  color: ${router.options.activeClickColor} !important;
 }
-`;
-    }
-    if (router.clickColor) {
-      content += `
-a:-webkit-any-link:active {
-  color: ${router.clickColor} !important;
-}
-`;
-    }
+a:active {
+  color: ${router.options.clickColor} !important;
+}`;
+
     routerThemeElement.textContent = content;
   }
 }

@@ -1,10 +1,11 @@
 ## VTheme
 
 <span id="DOC_GENERATION_MARKER_0"></span>
+# Docs
 
 - **[directive](#directive)**
 
-  - [SetColorInputBase](#setcolorinputbase)
+  - [DirectiveInputBase](#directiveinputbase)
   - [VThemeDirectiveInput](#vthemedirectiveinput)
 
 - **[extraFunctions](#extrafunctions)**
@@ -13,6 +14,8 @@
 
 - **[helpers](#helpers)**
 
+  - [VThemeLoaderColors](#vthemeloadercolors)
+  - [VThemeLoaderCss](#vthemeloadercss)
   - [VThemeLoader](#vthemeloader)
   - [VThemeRouterLink](#vthemerouterlink)
   - [VThemeScrollbar](#vthemescrollbar)
@@ -38,13 +41,13 @@
   - [GetColor](#getcolor)
   - [GetOptions](#getoptions)
 
-# directive
+### directive
 
 
-#### SetColorInputBase
+##### DirectiveInputBase
 
 ```typescript
-interface SetColorInputBase {
+interface DirectiveInputBase {
     background: string;
     color: string;
     fill: string;
@@ -52,16 +55,16 @@ interface SetColorInputBase {
 }
 ```
 
-#### VThemeDirectiveInput
+##### VThemeDirectiveInput
 
 ```typescript
-interface VThemeDirectiveInput extends SetColorInputBase {
+interface VThemeDirectiveInput extends DirectiveInputBase {
     isImage: boolean;
-    hover: SetColorInputBase;
-    focus: SetColorInputBase;
-    active: SetColorInputBase;
-    after: SetColorInputBase;
-    before: SetColorInputBase;
+    hover: DirectiveInputBase;
+    focus: DirectiveInputBase;
+    active: DirectiveInputBase;
+    after: DirectiveInputBase;
+    before: DirectiveInputBase;
     font: string;
     placeholder: {
         color: string;
@@ -71,27 +74,27 @@ interface VThemeDirectiveInput extends SetColorInputBase {
     shadow: boolean | 'sm' | 'lg' | 'strong';
     update: Array<{
         type: 'shadow' | 'color' | 'background' | 'fill' | 'border' | 'hover' | 'before' | 'after';
-        value: string | SetColorInputBase;
+        value: string | DirectiveInputBase;
     }> | true;
 }
 ```
 
-# extraFunctions
+### extraFunctions
 
 
-#### ThemeTransition
+##### ThemeTransition
 
 ```typescript
 function ThemeTransition(): void;
 ```
 
-# helpers
+### helpers
 
 
-#### VThemeLoader
+##### VThemeLoaderColors
 
 ```typescript
-class VThemeLoader {
+interface VThemeLoaderColors {
     /**
      * Loader primary color in Css color format, `#35a` etc.
      */
@@ -100,6 +103,13 @@ class VThemeLoader {
      * Loader accent color in Css color format, `#35a` etc.
      */
     accent: string;
+}
+```
+
+##### VThemeLoaderCss
+
+```typescript
+interface VThemeLoaderCss {
     /**
      * Loader width in Css unit format, `1px` | `1rem` etc.
      */
@@ -120,89 +130,31 @@ class VThemeLoader {
      * Loader border width in Css unit format, `1px` | `1rem` etc.
      */
     borderWidth: string;
-    constructor(
-    /**
-     * Loader primary color in Css color format, `#35a` etc.
-     */
-    primary: string, 
-    /**
-     * Loader accent color in Css color format, `#35a` etc.
-     */
-    accent: string, options?: {
-        width?: number | string;
-        height?: number | string;
-        speed?: number | string;
-        margin?: number | string;
-        borderWidth?: number | string;
-    });
 }
 ```
 
-#### VThemeRouterLink
+##### VThemeLoader
 
 ```typescript
-class VThemeRouterLink {
-    /**
-     * Router Link color in Css color format, `#35a` etc.
-     */
-    color: string;
-    /**
-     * Router Link hover color in Css color format, `#35a` etc.
-     */
-    hoverColor: string;
-    /**
-     * Router Link active color in Css color format, `#35a` etc.
-     */
-    activeColor: string;
-    /**
-     * Router Link active hover color in Css color format, `#35a` etc.
-     */
-    activeHoverColor: string;
-    /**
-     * Adds underline to router link if true.
-     */
-    underline: boolean;
-    /**
-     * Router Link click (active selector) color in Css color format, `#35a` etc.
-     */
-    clickColor?: string | undefined;
-    /**
-     * Router Link active click (active selector) color in Css color format, `#35a` etc.
-     */
-    activeClickColor?: string | undefined;
-    constructor(
-    /**
-     * Router Link color in Css color format, `#35a` etc.
-     */
-    color: string, 
-    /**
-     * Router Link hover color in Css color format, `#35a` etc.
-     */
-    hoverColor: string, 
-    /**
-     * Router Link active color in Css color format, `#35a` etc.
-     */
-    activeColor: string, 
-    /**
-     * Router Link active hover color in Css color format, `#35a` etc.
-     */
-    activeHoverColor: string, 
-    /**
-     * Adds underline to router link if true.
-     */
-    underline?: boolean, 
-    /**
-     * Router Link click (active selector) color in Css color format, `#35a` etc.
-     */
-    clickColor?: string | undefined, 
-    /**
-     * Router Link active click (active selector) color in Css color format, `#35a` etc.
-     */
-    activeClickColor?: string | undefined);
+class VThemeLoader extends VThemeBaseHelper<VThemeLoaderColors> {
+    width: string;
+    height: string;
+    speed: string;
+    margin: string;
+    borderWidth: string;
+    constructor(options?: Partial<VThemeLoaderColors>, cssOptions?: Partial<VThemeLoaderCss>);
 }
 ```
 
-#### VThemeScrollbar
+##### VThemeRouterLink
+
+```typescript
+class VThemeRouterLink extends VThemeBaseHelper<VThemeRouterLinkOptions> {
+    constructor(options?: Partial<VThemeRouterLinkOptions>);
+}
+```
+
+##### VThemeScrollbar
 
 ```typescript
 class VThemeScrollbar {
@@ -250,7 +202,7 @@ class VThemeScrollbar {
 }
 ```
 
-#### VThemeColor
+##### VThemeColor
 
 ```typescript
 class VThemeColor {
@@ -268,10 +220,10 @@ class VThemeColor {
 }
 ```
 
-# index
+### index
 
 
-#### ThemeController
+##### ThemeController
 
 ```typescript
 /**
@@ -283,10 +235,10 @@ class ThemeController {
 }
 ```
 
-# save
+### save
 
 
-#### SaveTheme
+##### SaveTheme
 
 ```typescript
 /**
@@ -295,16 +247,16 @@ class ThemeController {
 function SaveTheme(): void;
 ```
 
-# store
+### store
 
 
-#### Color
+##### Color
 
 ```typescript
 type Color = VThemeColor | string;
 ```
 
-#### ITheme
+##### ITheme
 
 ```typescript
 /**
@@ -355,7 +307,7 @@ interface ITheme {
 }
 ```
 
-#### ThemeOptions
+##### ThemeOptions
 
 ```typescript
 /**
@@ -378,10 +330,10 @@ interface ThemeOptions {
 }
 ```
 
-# update
+### update
 
 
-#### UpdateTheme
+##### UpdateTheme
 
 ```typescript
 /**
@@ -391,16 +343,17 @@ interface ThemeOptions {
 function UpdateTheme(options?: UpdateThemeOptions | boolean): void;
 ```
 
-#### GetColor
+##### GetColor
 
 ```typescript
 function GetColor(input: string | VThemeColor): string;
 ```
 
-#### GetOptions
+##### GetOptions
 
 ```typescript
 function GetOptions(input: string | VThemeColor): VThemeColorOptions;
 ```
 
+*Generated With* **[ts-doc-gen](https://www.npmjs.com/package/ts-doc-gen)**
 <span id="DOC_GENERATION_MARKER_1"></span>

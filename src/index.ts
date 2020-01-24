@@ -3,9 +3,6 @@ import directive from './directive';
 import ThemeStore, { ThemeOptions } from './store';
 import { InitTheme } from './utility.internal';
 
-/**
- * TODO
- */
 export class ThemeController {
   public static store = new ThemeStore();
   public static Init(options?: ThemeOptions) {

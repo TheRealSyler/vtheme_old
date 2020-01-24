@@ -1,125 +1,165 @@
 import { isValidStringColor } from 's.color';
 import { VThemeColorOptions, defaultVThemeColorOptions } from './helpers.internal';
+import Merge from 'deepmerge';
 
-export class VThemeLoader {
+class VThemeBaseHelper<T extends Object> {
+  options: T;
+  constructor(defaults: T, options: Partial<T>) {
+    this.options = Merge(defaults, options);
+  }
+}
+
+export interface VThemeLoaderColors {
+  /**
+   * Loader primary color in Css color format, `#35a` etc.
+   */
+  primary: string;
+  /**
+   * Loader accent color in Css color format, `#35a` etc.
+   */
+  accent: string;
+}
+export interface VThemeLoaderCss {
   /**
    * Loader width in Css unit format, `1px` | `1rem` etc.
    */
-  width: string = '';
+  width: string;
   /**
    * Loader height in Css unit format, `1px` | `1rem` etc.
    */
-  height: string = '';
+  height: string;
   /**
    * Loader rotation speed in Css unit format, `1s` | `100ms` etc.
    */
-  speed: string = '';
+  speed: string;
   /**
    * Loader margin in Css unit format, `1px` | `1rem` etc.
    */
-  margin: string = '';
+  margin: string;
   /**
    * Loader border width in Css unit format, `1px` | `1rem` etc.
    */
-  borderWidth: string = '';
-  constructor(
-    /**
-     * Loader primary color in Css color format, `#35a` etc.
-     */
-    public primary: string,
-    /**
-     * Loader accent color in Css color format, `#35a` etc.
-     */
-    public accent: string,
-    options?: {
-      width?: number | string;
-      height?: number | string;
-      speed?: number | string;
-      margin?: number | string;
-      borderWidth?: number | string;
-    }
-  ) {
-    if (!options) {
-      options = {};
-    }
-    this.width = ToCssUnit(options.width || 40);
-    this.height = ToCssUnit(options.height || 40);
-    this.speed = ToCssTimeUnit(options.speed || 1.5);
-    this.margin = ToCssUnit(options.margin || 50);
-    this.borderWidth = ToCssUnit(options.borderWidth || 5);
+  borderWidth: string;
+}
+export class VThemeLoader extends VThemeBaseHelper<VThemeLoaderColors> {
+  width: string;
+  height: string;
+  speed: string;
+  margin: string;
+  borderWidth: string;
+  constructor(options?: Partial<VThemeLoaderColors>, cssOptions?: Partial<VThemeLoaderCss>) {
+    options = options || {};
+    super(
+      {
+        primary: '#aaa',
+        accent: '#f64'
+      },
+      options
+    );
+    cssOptions = cssOptions || {};
+    this.width = ToCssUnit(cssOptions.width || 40);
+    this.height = ToCssUnit(cssOptions.height || 40);
+    this.speed = ToCssTimeUnit(cssOptions.speed || 1.5);
+    this.margin = ToCssUnit(cssOptions.margin || 50);
+    this.borderWidth = ToCssUnit(cssOptions.borderWidth || 5);
   }
 }
-export class VThemeRouterLink {
-  constructor(
-    /**
-     * Router Link color in Css color format, `#35a` etc.
-     */
-    public color: string,
-    /**
-     * Router Link hover color in Css color format, `#35a` etc.
-     */
-    public hoverColor: string,
 
-    /**
-     * Router Link active color in Css color format, `#35a` etc.
-     */
-    public activeColor: string,
-    /**
-     * Router Link active hover color in Css color format, `#35a` etc.
-     */
-    public activeHoverColor: string,
-    /**
-     * Adds underline to router link if true.
-     */
-    public underline: boolean = true,
-    /**
-     * Router Link click (active selector) color in Css color format, `#35a` etc.
-     */
-    public clickColor?: string,
-    /**
-     * Router Link active click (active selector) color in Css color format, `#35a` etc.
-     */
-    public activeClickColor?: string
-  ) {}
+export interface VThemeRouterLinkOptions {
+  focusRadius: number;
+  focusOffset: number;
+  focusWidth: number;
+  /**
+   * Router Link color in Css color format, `#35a` etc.
+   */
+  color: string;
+  /**
+   * Router Link hover color in Css color format, `#35a` etc.
+   */
+  hoverColor: string;
+  /**
+   * Router Link active color in Css color format, `#35a` etc.
+   */
+  activeColor: string;
+  /**
+   * Router Link active hover color in Css color format, `#35a` etc.
+   */
+  activeHoverColor: string;
+  clickColor: string;
+  activeClickColor: string;
+  underline: boolean;
+  focusColor: string;
+  focusColorBg: string;
 }
-export class VThemeScrollbar {
+
+export class VThemeRouterLink extends VThemeBaseHelper<VThemeRouterLinkOptions> {
+  constructor(options?: Partial<VThemeRouterLinkOptions>) {
+    options = options || {};
+    super(
+      {
+        focusRadius: 5,
+        focusOffset: 5,
+        focusWidth: 1,
+        activeClickColor: '#fff',
+        clickColor: '#ddd',
+        activeColor: '#eee',
+        activeHoverColor: '#ccc',
+        hoverColor: '#ddd',
+        color: '#f64',
+        focusColor: '#f86',
+        focusColorBg: '#222',
+        underline: false
+      },
+      options
+    );
+  }
+}
+export interface VThemeScrollbarColors {
+  /**
+   * Scrollbar track color in Css color format, `#35a` etc.
+   */
+  track: string;
+  /**
+   * Scrollbar thumb color in Css color format, `#35a` etc.
+   */
+  thumb: string;
+  /**
+   * Scrollbar thumb hover color in Css color format, `#35a` etc.
+   */
+  thumbHover: string;
+}
+export interface VThemeScrollbarCss {
   /**
    * Scrollbar width in Css unit format, `1px` | `1rem` etc.
    */
-  width: string = '';
+  width: string | number;
   /**
    * Scrollbar width in Css unit format, `1px` | `1rem` etc.
    */
-  height: string = '';
+  height: string | number;
   /**
    * Scrollbar width in Css unit format, `1px` | `1rem` etc.
    */
-  radius: string = '';
-  constructor(
-    /**
-     * Scrollbar track color in Css color format, `#35a` etc.
-     */
-    public track: string,
-    /**
-     * Scrollbar thumb color in Css color format, `#35a` etc.
-     */
-    public thumb: string,
-    /**
-     * Scrollbar thumb hover color in Css color format, `#35a` etc.
-     */
-    public thumbHover: string,
-    options?: {
-      width?: number | string;
-      height?: number | string;
-      radius?: number | string;
-    }
-  ) {
-    if (!options) {
-      options = {};
-    }
-    this.width = ToCssUnit(options.width || 10);
-    this.height = ToCssUnit(options.height || 10);
-    this.radius = ToCssUnit(options.radius || 12);
+  radius: string | number;
+}
+export class VThemeScrollbar extends VThemeBaseHelper<VThemeScrollbarColors> {
+  width: string;
+  height: string;
+  radius: string;
+  constructor(options?: Partial<VThemeScrollbarColors>, cssOptions?: Partial<VThemeScrollbarCss>) {
+    options = options || {};
+    super(
+      {
+        thumb: '#333',
+        thumbHover: '#555',
+        track: '#222'
+      },
+      options
+    );
+    cssOptions = cssOptions || {};
+    this.width = ToCssUnit(cssOptions.width || 10);
+    this.height = ToCssUnit(cssOptions.height || 10);
+    this.radius = ToCssUnit(cssOptions.radius || 12);
   }
 }
 
